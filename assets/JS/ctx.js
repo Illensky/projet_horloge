@@ -1,13 +1,16 @@
 /**
- * (used to draw a clock of 500x500 px)
- * @constructor clock
+ *
+ * @param size take a string of the size wanted ex : "500"
+ * @param wantedContainer take a string of the wanted container,
+ * a querrySelector method is used here ... ex : "body" or "#container"
+ * @constructor clock (add a clock to the wanted container)
  */
-const Clock = function () {
+const Clock = function (size, wantedContainer) {
     // create the canvas and get the context
     const canvas = document.createElement("canvas");
-    canvas.width = "500";
-    canvas.height = "500";
-    document.querySelector("body").appendChild(canvas);
+    canvas.width = size;
+    canvas.height = size;
+    document.querySelector(wantedContainer).appendChild(canvas);
     const ctx = canvas.getContext("2d");
     let firstDraw = true;
 
@@ -22,15 +25,15 @@ const Clock = function () {
 
         hour = hour >= 12 ? hour - 12 : hour;
         if (!firstDraw) {
-            ctx.translate(250, 250);
+            ctx.translate(parseInt(size)/2, parseInt(size)/2);
             ctx.rotate(-Math.PI / 2);
         }
         firstDraw = false
 
 // place the clock in the canva center and rotate it to get 12/0 on the top
 
-        ctx.clearRect(0, 0, 500, 500);
-        ctx.translate(250, 250);
+        ctx.clearRect(0, 0, parseInt(size), parseInt(size));
+        ctx.translate(parseInt(size)/2, parseInt(size)/2);
         ctx.rotate(-Math.PI / 2);
         ctx.save();
 // draw the clock
@@ -38,7 +41,7 @@ const Clock = function () {
         ctx.strokeStyle = "grey";
         ctx.lineWidth = 10;
         ctx.beginPath();
-        ctx.arc(0, 0, 130, 0, Math.PI * 2);
+        ctx.arc(0, 0, parseInt(size)/3.85, 0, Math.PI * 2);
         ctx.stroke();
         ctx.restore()
 // draw hours
@@ -52,8 +55,8 @@ const Clock = function () {
         for (let i = 0; i < 12; i++) {
             ctx.beginPath();
             ctx.rotate(Math.PI / 6);
-            ctx.moveTo(100, 0);
-            ctx.lineTo(120, 0);
+            ctx.moveTo(parseInt(size)/5, 0);
+            ctx.lineTo(parseInt(size)/4.17, 0);
             ctx.stroke();
         }
 
@@ -67,8 +70,8 @@ const Clock = function () {
         for (let i = 0; i < 60; i++) {
             if ((i % 5) !== 0) {
                 ctx.beginPath();
-                ctx.moveTo(100, 0);
-                ctx.lineTo(103, 0);
+                ctx.moveTo(parseInt(size)/5, 0);
+                ctx.lineTo(parseInt(size)/4.84, 0);
                 ctx.stroke();
             }
             ctx.rotate(Math.PI / 30);
@@ -85,7 +88,7 @@ const Clock = function () {
         ctx.rotate((hour * (Math.PI / 6)) + (min * (Math.PI / 360)));
         ctx.beginPath();
         ctx.moveTo(0, 0);
-        ctx.lineTo(70, 0);
+        ctx.lineTo(parseInt(size)/7.13, 0);
         ctx.stroke();
 
         ctx.restore();
@@ -99,7 +102,7 @@ const Clock = function () {
         ctx.rotate((min * (Math.PI / 30)) + (sec * (Math.PI / 1800)));
         ctx.beginPath();
         ctx.moveTo(0, 0);
-        ctx.lineTo(90, 0);
+        ctx.lineTo(parseInt(size)/5.56, 0);
         ctx.stroke();
 
         ctx.restore();
@@ -113,9 +116,9 @@ const Clock = function () {
         ctx.rotate(sec * (Math.PI / 30))
         ctx.beginPath();
         ctx.moveTo(0, 0);
-        ctx.lineTo(98, 0);
+        ctx.lineTo(parseInt(size)/5.10, 0);
         ctx.stroke();
-
+// draw clock center point
         ctx.fillStyle = "black";
         ctx.beginPath();
         ctx.arc(0, 0, 7, 0, Math.PI * 2);
@@ -129,5 +132,5 @@ const Clock = function () {
     }
 }
 
-const tryClock = new Clock()
+const tryClock = new Clock("2000", "body")
 tryClock.draw()
